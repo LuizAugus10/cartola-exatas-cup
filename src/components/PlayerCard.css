@@ -1,0 +1,113 @@
+.fut-card {
+  width: 110px;
+  background: linear-gradient(145deg, #1a2a3a 0%, #0d1b2a 100%);
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  flex-shrink: 0;
+}
+
+.fut-card:hover:not(.disabled) {
+  transform: scale(1.03);
+  border-color: var(--accent-gold);
+  box-shadow: 0 4px 16px rgba(201, 162, 39, 0.2);
+}
+
+.fut-card.selected {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 12px rgba(46, 204, 113, 0.3);
+}
+
+.fut-card.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+}
+
+.fut-card.goleiro .fut-card-position {
+  color: #4ade80;
+}
+
+.fut-card.linha .fut-card-position {
+  color: #60a5fa;
+}
+
+.fut-card-top {
+  display: flex;
+  padding: 8px;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.fut-card-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.fut-card-points {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent-gold);
+  line-height: 1;
+}
+
+.fut-card-position {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.fut-card-price {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.fut-card-avatar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 55px;
+}
+
+.fut-card-avatar span {
+  font-size: 22px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.15);
+}
+
+.fut-card-avatar img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.fut-card-name {
+  padding: 4px 8px 2px;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-primary);
+  border-top: 1px solid rgba(201, 162, 39, 0.15);
+}
+
+.fut-card-team {
+  padding: 2px 8px 6px;
+  font-size: 9px;
+  text-align: center;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

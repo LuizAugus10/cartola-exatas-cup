@@ -1,23 +1,68 @@
-import logo from './logo.svg';
+import { useState, useEffect, useCallback } from 'react';
+import Header from './components/Header';
+import BottomNav from './components/BottomNav';
+import Login from './pages/Login';
+import TeamBuilder from './pages/TeamBuilder';
+import Ranking from './components/Ranking';
 import './App.css';
 
 function App() {
+  const [user, setUser] = useState(null);
+  const [currentView, setCurrentView] = useState('team');
+  const [toast, setToast] = useState(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('fantasyUser');
+    if (saved) {
+      try {
+        setUser(JSON.parse(saved));
+      } catch {
+        localStorage.removeItem('fantasyUser');
+      }
+    }
+  }, []);
+
+  const handleLogin = useCallback((userData) => {
+    setUser(userData);
+    localStorage.setItem('fantasyUser', JSON.stringify(userData));
+  }, []);
+
+  const handleLogout = useCallback(() => {
+    setUser(null);
+    localStorage.removeItem('fantasyUser');
+    setCurrentView('team');
+  }, []);
+
+  const showToast = useCallback((message, type = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  }, []);
+
+  if (!user) {
+    return (
+      <div className="app">
+        <Login onLogin={handleLogin} />
+      </div>
+    );
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Header userName={user.nome} onLogout={handleLogout} />
+
+      {currentView === 'team' && (
+        <TeamBuilder user={user} onToast={showToast} />
+      )}
+
+      {currentView === 'ranking' && (
+        <Ranking userTelefone={user.telefone} />
+      )}
+
+      <BottomNav currentView={currentView} onNavigate={setCurrentView} />
+
+      {toast && (
+        <div className={`toast ${toast.type}`}>{toast.message}</div>
+      )}
     </div>
   );
 }

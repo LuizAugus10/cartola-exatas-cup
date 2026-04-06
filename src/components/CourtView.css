@@ -1,0 +1,200 @@
+.court-container {
+  padding: 8px 12px;
+}
+
+.court {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 3 / 4;
+  margin: 0 auto;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      #2d8a4e 0px,
+      #2d8a4e 22px,
+      #289445 22px,
+      #289445 44px
+    );
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Center line */
+.court-center-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* Center circle */
+.court-center-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 70px;
+  height: 70px;
+  transform: translate(-50%, -50%);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+}
+
+/* Penalty areas */
+.court-penalty-top {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  height: 15%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top: none;
+}
+
+.court-penalty-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  height: 15%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-bottom: none;
+}
+
+/* Goal lines */
+.court-goal-top {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20%;
+  height: 4%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top: none;
+}
+
+.court-goal-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20%;
+  height: 4%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-bottom: none;
+}
+
+/* Slot positions */
+.court-slot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.court-slot:active {
+  transform: translate(-50%, -50%) scale(0.93);
+}
+
+.slot-gk   { top: 84%; left: 50%; }
+.slot-def1 { top: 62%; left: 28%; }
+.slot-def2 { top: 62%; left: 72%; }
+.slot-atk1 { top: 32%; left: 28%; }
+.slot-atk2 { top: 32%; left: 72%; }
+
+/* Empty slot */
+.slot-empty-content {
+  width: 58px;
+  height: 68px;
+  border: 2px dashed rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(4px);
+}
+
+.slot-plus {
+  font-size: 22px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.slot-label {
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Filled slot */
+.slot-player {
+  width: 58px;
+  text-align: center;
+  position: relative;
+}
+
+.slot-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a2a3a, #0d1b2a);
+  border: 2px solid var(--accent-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-gold);
+  overflow: hidden;
+}
+
+.slot-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slot-name {
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.slot-remove {
+  position: absolute;
+  top: -6px;
+  right: -2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-red);
+  color: white;
+  font-size: 12px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
