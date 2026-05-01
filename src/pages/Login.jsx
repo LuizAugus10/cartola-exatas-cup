@@ -7,6 +7,7 @@ export default function Login({ onLogin }) {
   const [step, setStep] = useState('phone');
   const [telefone, setTelefone] = useState('');
   const [userName, setUserName] = useState('');
+  const [userType, setUserType] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -21,6 +22,7 @@ export default function Login({ onLogin }) {
       const result = await apiLogin(telefone.trim());
       if (result.success) {
         setUserName(result.nome);
+        setUserType(result.tipo || 'user');
         setStep('confirm');
       } else {
         setError('Telefone não encontrado. Verifique o número.');
@@ -33,13 +35,14 @@ export default function Login({ onLogin }) {
   };
 
   const handleConfirm = () => {
-    onLogin({ telefone: telefone.trim(), nome: userName });
+    onLogin({ telefone: telefone.trim(), nome: userName, tipo: userType });
   };
 
   const handleBack = () => {
     setStep('phone');
     setTelefone('');
     setUserName('');
+    setUserType('');
     setError('');
   };
 

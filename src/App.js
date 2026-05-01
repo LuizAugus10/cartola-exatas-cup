@@ -3,6 +3,7 @@ import Header from './components/Header';
 import BottomNav from './components/BottomNav';
 import Login from './pages/Login';
 import TeamBuilder from './pages/TeamBuilder';
+import Mesario from './pages/Mesario';
 import Ranking from './components/Ranking';
 import './App.css';
 
@@ -50,15 +51,23 @@ function App() {
     <div className="app">
       <Header userName={user.nome} onLogout={handleLogout} />
 
-      {currentView === 'team' && (
-        <TeamBuilder user={user} onToast={showToast} />
+      {user.tipo === 'mesario' ? (
+        <Mesario user={user} onToast={showToast} />
+      ) : (
+        <>
+          {currentView === 'team' && (
+            <TeamBuilder user={user} onToast={showToast} />
+          )}
+          {currentView === 'ranking' && (
+            <Ranking userTelefone={user.telefone} />
+          )}
+        </>
       )}
 
-      {currentView === 'ranking' && (
-        <Ranking userTelefone={user.telefone} />
-      )}
-
-      <BottomNav currentView={currentView} onNavigate={setCurrentView} />
+      <BottomNav 
+        currentView={currentView} 
+        onNavigate={setCurrentView}
+      />
 
       {toast && (
         <div className={`toast ${toast.type}`}>{toast.message}</div>
