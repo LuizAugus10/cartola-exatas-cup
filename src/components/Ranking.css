@@ -12,24 +12,26 @@
 
 .ranking-header-bar h2 {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 900;
+  color: #144191;
 }
 
 .ranking-refresh {
   font-size: 20px;
-  background: var(--bg-card);
-  color: var(--text-secondary);
+  background: #f5f5f5;
+  color: #666666;
   width: 36px;
   height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background var(--transition);
+  transition: all var(--transition);
+  border: 1px solid #e0e0e0;
 }
 
-.ranking-refresh:hover {
-  background: var(--bg-card-hover);
+.ranking-refresh:active {
+  background: #efefef;
 }
 
 .ranking-list {
@@ -42,20 +44,23 @@
   display: flex;
   align-items: center;
   padding: 12px 16px;
-  background: var(--bg-card);
+  background: #ffffff;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
+  border: 1px solid #e0e0e0;
   gap: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .ranking-item.top3 {
-  background: linear-gradient(135deg, var(--bg-card), rgba(201, 162, 39, 0.08));
-  border-color: rgba(201, 162, 39, 0.2);
+  background: linear-gradient(135deg, #ffffff 0%, rgba(106, 168, 79, 0.06));
+  border-color: rgba(106, 168, 79, 0.2);
+  border-width: 2px;
 }
 
 .ranking-item.mine {
-  border-color: var(--accent-gold);
-  background: linear-gradient(135deg, var(--bg-card), rgba(201, 162, 39, 0.12));
+  border-color: #144191;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(20, 65, 145, 0.06));
+  border-width: 2px;
 }
 
 .ranking-pos {
@@ -63,33 +68,37 @@
   font-weight: 700;
   min-width: 36px;
   text-align: center;
-  color: var(--text-secondary);
+  color: #666666;
 }
 
 .ranking-item.top3 .ranking-pos {
   font-size: 20px;
+  color: #144191;
 }
 
 .ranking-name {
   flex: 1;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
+  color: #1a1a1a;
 }
 
 .ranking-points {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--accent-gold);
+  font-size: 16px;
+  font-weight: 900;
+  color: #6aa84f;
 }
 
 .ranking-empty {
   text-align: center;
-  color: var(--text-muted);
+  color: #999999;
   padding: 40px 0;
+  font-size: 14px;
 }
 
 .ranking-error {
   text-align: center;
-  color: var(--accent-red);
+  color: #e74c3c;
   padding: 40px 16px;
+  font-size: 14px;
 }

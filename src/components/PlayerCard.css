@@ -1,37 +1,45 @@
 .fut-card {
   width: 110px;
-  background: linear-gradient(145deg, #1a2a3a 0%, #0d1b2a 100%);
-  border: 1px solid rgba(201, 162, 39, 0.3);
+  background: linear-gradient(145deg, #ffffff 0%, #f5f5f5 100%);
+  border: 2px solid #e0e0e0;
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
   flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.fut-card:hover:not(.disabled) {
-  transform: scale(1.03);
-  border-color: var(--accent-gold);
-  box-shadow: 0 4px 16px rgba(201, 162, 39, 0.2);
+.fut-card:active:not(.disabled) {
+  transform: scale(0.97);
+  border-color: #144191;
+  box-shadow: 0 2px 8px rgba(20, 65, 145, 0.15);
 }
 
 .fut-card.selected {
-  border-color: var(--accent-green);
-  box-shadow: 0 0 12px rgba(46, 204, 113, 0.3);
+  border-color: #6aa84f;
+  box-shadow: 0 0 12px rgba(106, 168, 79, 0.25);
+  background: linear-gradient(145deg, #ffffff 0%, #f0fce8 100%);
+}
+
+.fut-card.selected.reserva {
+  border-color: #fcd303;
+  box-shadow: 0 0 12px rgba(252, 211, 3, 0.25);
+  background: linear-gradient(145deg, #ffffff 0%, #fffef0 100%);
 }
 
 .fut-card.disabled {
   opacity: 0.35;
   cursor: not-allowed;
-  filter: grayscale(0.5);
+  filter: grayscale(0.8);
 }
 
 .fut-card.goleiro .fut-card-position {
-  color: #4ade80;
+  color: #6aa84f;
 }
 
 .fut-card.linha .fut-card-position {
-  color: #60a5fa;
+  color: #144191;
 }
 
 .fut-card-top {
@@ -50,8 +58,8 @@
 
 .fut-card-points {
   font-size: 22px;
-  font-weight: 800;
-  color: var(--accent-gold);
+  font-weight: 900;
+  color: #144191;
   line-height: 1;
 }
 
@@ -65,7 +73,7 @@
 .fut-card-price {
   font-size: 10px;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: #666666;
   margin-top: 2px;
 }
 
@@ -74,18 +82,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 55px;
+  height: 70px;
+  background: rgba(106, 168, 79, 0.05);
+  border-radius: 4px;
 }
 
 .fut-card-avatar span {
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 800;
-  color: rgba(255, 255, 255, 0.15);
+  color: rgba(20, 65, 145, 0.1);
 }
 
 .fut-card-avatar img {
-  width: 50px;
-  height: 50px;
+  width: 65px;
+  height: 65px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -98,15 +108,15 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--text-primary);
-  border-top: 1px solid rgba(201, 162, 39, 0.15);
+  color: #1a1a1a;
+  border-top: 1px solid #e0e0e0;
 }
 
 .fut-card-team {
   padding: 2px 8px 6px;
   font-size: 9px;
   text-align: center;
-  color: var(--text-muted);
+  color: #999999;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

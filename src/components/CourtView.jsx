@@ -1,11 +1,11 @@
 import './CourtView.css';
 
 const TITULAR_SLOTS = [
-  { id: 0, type: 'goleiro', label: 'GOL', className: 'slot-gk' },
-  { id: 1, type: 'linha', label: 'FIX', className: 'slot-def1' },
-  { id: 2, type: 'linha', label: 'FIX', className: 'slot-def2' },
-  { id: 3, type: 'linha', label: 'ALA', className: 'slot-atk1' },
-  { id: 4, type: 'linha', label: 'PIV', className: 'slot-atk2' },
+  { id: 0, type: 'goleiro', label: 'GOL', className: 'slot-gk', pos: 'diamond-top' },
+  { id: 1, type: 'linha', label: 'LI', className: 'slot-left-mid', pos: 'diamond-left' },
+  { id: 2, type: 'linha', label: 'LI', className: 'slot-right-mid', pos: 'diamond-right' },
+  { id: 3, type: 'linha', label: 'LI', className: 'slot-left-low', pos: 'diamond-low-left' },
+  { id: 4, type: 'linha', label: 'LI', className: 'slot-right-low', pos: 'diamond-low-right' },
 ];
 
 export default function CourtView({ titulares, onSlotClick, onRemovePlayer, disabled }) {

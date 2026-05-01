@@ -1,19 +1,19 @@
 :root {
-  --bg-primary: #0a0e1a;
-  --bg-secondary: #111827;
-  --bg-card: #1a2332;
-  --bg-card-hover: #243044;
-  --accent-green: #2ecc71;
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f0f0f0;
+  --accent-green: #6aa84f;
   --accent-red: #e74c3c;
-  --accent-gold: #c9a227;
-  --accent-gold-light: #e8c84a;
-  --accent-blue: #3498db;
-  --text-primary: #ffffff;
-  --text-secondary: #8899aa;
-  --text-muted: #556677;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-light: rgba(255, 255, 255, 0.15);
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --accent-gold: #fcd303;
+  --accent-gold-light: #fcd303;
+  --accent-blue: #144191;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+  --border: rgba(20, 65, 145, 0.1);
+  --border-light: rgba(20, 65, 145, 0.2);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   --radius: 12px;
   --radius-sm: 8px;
   --transition: 0.2s ease;
@@ -34,6 +34,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
 }
 
 input, button, select {

@@ -11,15 +11,15 @@
   background:
     repeating-linear-gradient(
       0deg,
-      #2d8a4e 0px,
-      #2d8a4e 22px,
-      #289445 22px,
-      #289445 44px
+      #6aa84f 0px,
+      #6aa84f 22px,
+      #5fa23e 22px,
+      #5fa23e 44px
     );
   border-radius: 12px;
-  border: 2px solid rgba(255, 255, 255, 0.25);
+  border: 3px solid #144191;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 20px rgba(20, 65, 145, 0.15);
 }
 
 /* Center line */
@@ -29,7 +29,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.45);
 }
 
 /* Center circle */
@@ -40,7 +40,7 @@
   width: 70px;
   height: 70px;
   transform: translate(-50%, -50%);
-  border: 2px solid rgba(255, 255, 255, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.45);
   border-radius: 50%;
 }
 
@@ -52,7 +52,7 @@
   transform: translateX(-50%);
   width: 50%;
   height: 15%;
-  border: 2px solid rgba(255, 255, 255, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.45);
   border-top: none;
 }
 
@@ -63,7 +63,7 @@
   transform: translateX(-50%);
   width: 50%;
   height: 15%;
-  border: 2px solid rgba(255, 255, 255, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.45);
   border-bottom: none;
 }
 
@@ -75,7 +75,7 @@
   transform: translateX(-50%);
   width: 20%;
   height: 4%;
-  border: 2px solid rgba(255, 255, 255, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.45);
   border-top: none;
 }
 
@@ -86,17 +86,43 @@
   transform: translateX(-50%);
   width: 20%;
   height: 4%;
-  border: 2px solid rgba(255, 255, 255, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.45);
   border-bottom: none;
 }
 
-/* Slot positions */
+/* Slot positions - Diamond Formation (1,2,1) */
 .court-slot {
   position: absolute;
   transform: translate(-50%, -50%);
   z-index: 10;
   cursor: pointer;
   transition: transform 0.15s ease;
+}
+
+/* Diamond formation positions */
+.slot-gk {
+  top: 15%;
+  left: 50%;
+}
+
+.slot-right-mid {
+  top: 20%;
+  left: 50%;
+}
+
+.slot-left-low {
+  top: 45%;
+  left: 20%;
+}
+
+.slot-right-low {
+  top: 45%;
+  left: 80%;
+}
+
+.slot-left-mid {
+  top: 68%;
+  left: 50%;
 }
 
 .court-slot:active {

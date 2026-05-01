@@ -90,6 +90,12 @@ export default function TeamBuilder({ user, onToast }) {
   const budgetOk = totalCost <= maxBudget;
   const filledCount = [...titulares, ...reservas].filter(Boolean).length;
 
+  const totalPoints = useMemo(() => {
+    const titsPoints = titulares.reduce((sum, p) => sum + (p ? Number(p.pontos) : 0), 0);
+    const resPoints = reservas.reduce((sum, p) => sum + (p ? Number(p.pontos) * 0.5 : 0), 0);
+    return titsPoints + resPoints;
+  }, [titulares, reservas]);
+
   const handleSlotClick = useCallback(
     (group, index) => {
       if (!isMarketOpen) return;
@@ -197,6 +203,13 @@ export default function TeamBuilder({ user, onToast }) {
           />
         </div>
         <div className="budget-count">{filledCount}/10 jogadores</div>
+      </div>
+
+      {/* Floating Points Badge */}
+      <div className="floating-points">
+        <div className="floating-points-circle">
+          <span className="floating-points-value">{totalPoints.toFixed(1)}</span>
+        </div>
       </div>
 
       {!isMarketOpen && (

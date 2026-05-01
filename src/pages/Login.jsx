@@ -46,9 +46,15 @@ export default function Login({ onLogin }) {
   return (
     <div className="login">
       <div className="login-card">
-        <div className="login-logo">⚽</div>
+        <div className="login-logo-container">
+          <img 
+            src="/logo-exatas.png" 
+            alt="Fantasy Exatas Cup" 
+            className="login-logo-image"
+          />
+        </div>
         <h1 className="login-title">Fantasy Exatas Cup</h1>
-        <p className="login-subtitle">Monte seu time e dispute o campeonato!</p>
+        <p className="login-subtitle">Monte seu time e dispute o campeonato do futsal!</p>
 
         {step === 'phone' && (
           <form onSubmit={handleSubmit} className="login-form">
