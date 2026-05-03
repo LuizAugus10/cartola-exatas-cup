@@ -17,6 +17,7 @@ export default function PartidaScreen({ user, jogoId, jogo, onVoltar, onToast })
   const [jogoAtual, setJogoAtual] = useState(jogo);
   const [loading, setLoading] = useState(true);
   const [registrando, setRegistrando] = useState(false);
+  const [deletando, setDeletando] = useState(false);
   const [faltasA, setFaltasA] = useState(0);
   const [faltasB, setFaltasB] = useState(0);
 
@@ -62,16 +63,18 @@ export default function PartidaScreen({ user, jogoId, jogo, onVoltar, onToast })
 
   const handleRegistrarEvento = async (jogadorId, tipo) => {
     try {
-      // Atualização otimista do placar
-      let golsAAntes = jogoAtual.golsA;
-      let golsBAntes = jogoAtual.golsB;
+      // Salva estado anterior pra rollback
+      const estadoAnterior = { ...jogoAtual };
       
+      // Atualização otimista: só faz pra gol (que afeta placar)
       if (tipo === 'gol') {
         const jogador = jogadores.find(j => j.id === jogadorId);
-        if (jogador.time === jogoAtual.timeA) {
-          setJogoAtual(prev => ({ ...prev, golsA: prev.golsA + 1 }));
-        } else {
-          setJogoAtual(prev => ({ ...prev, golsB: prev.golsB + 1 }));
+        if (jogador) {
+          if (jogador.time === jogoAtual.timeA) {
+            setJogoAtual(prev => ({ ...prev, golsA: prev.golsA + 1 }));
+          } else {
+            setJogoAtual(prev => ({ ...prev, golsB: prev.golsB + 1 }));
+          }
         }
       }
 
@@ -81,39 +84,36 @@ export default function PartidaScreen({ user, jogoId, jogo, onVoltar, onToast })
       if (result.success) {
         onToast(`${tipo} registrado!`);
         carregarDados();
-        // Refetch jogo pra sincronizar com backend
+        // Refetch rápido pra sincronizar com backend
         setTimeout(() => refetchJogo(), 300);
       } else {
         // Rollback se falhar
-        setJogoAtual(prev => ({
-          ...prev,
-          golsA: golsAAntes,
-          golsB: golsBAntes
-        }));
+        setJogoAtual(estadoAnterior);
         onToast('Erro ao registrar evento', 'error');
       }
     } catch (err) {
       // Rollback em caso de erro de rede
-      setJogoAtual(prev => ({
-        ...prev,
-        golsA: jogadores.find(j => j.id === jogadores[0]?.id)?.time ? 
-          (jogoAtual.golsA) : jogoAtual.golsA,
-        golsB: jogoAtual.golsB
-      }));
-      onToast('Erro ao registrar evento', 'error');
+      onToast('Erro de conexão', 'error');
       console.error(err);
     }
   };
 
   const handleRemoverEvento = async (eventoId) => {
     try {
+      setDeletando(true);
       const result = await removerEvento(user.telefone, eventoId);
       if (result.success) {
         onToast('Evento removido');
-        await carregarDados();
+        carregarDados();
+        setTimeout(() => refetchJogo(), 300);
+      } else {
+        onToast('Erro ao remover evento', 'error');
       }
     } catch (err) {
       onToast('Erro ao remover evento', 'error');
+      console.error(err);
+    } finally {
+      setDeletando(false);
     }
   };
 
@@ -307,6 +307,7 @@ export default function PartidaScreen({ user, jogoId, jogo, onVoltar, onToast })
                   <button
                     className="evento-delete"
                     onClick={() => handleRemoverEvento(evento.id)}
+                    disabled={deletando}
                   >
                     ✕
                   </button>

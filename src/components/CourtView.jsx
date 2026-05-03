@@ -8,7 +8,7 @@ const TITULAR_SLOTS = [
   { id: 4, type: 'linha', label: 'LI', className: 'slot-right-low', pos: 'diamond-low-right' },
 ];
 
-export default function CourtView({ titulares, onSlotClick, onRemovePlayer, disabled }) {
+export default function CourtView({ titulares, onSlotClick, onPlayerClick, onRemovePlayer, disabled }) {
   return (
     <div className="court-container">
       <div className="court">
@@ -25,11 +25,16 @@ export default function CourtView({ titulares, onSlotClick, onRemovePlayer, disa
             <div
               key={slot.id}
               className={`court-slot ${slot.className} ${player ? 'filled' : 'empty'}`}
-              onClick={() => !disabled && onSlotClick(slot.id)}
+              onClick={() => !disabled && !player && onSlotClick(slot.id)}
             >
               {player ? (
-                <div className="slot-player">
-                  <div className="slot-avatar">
+                <div 
+                  className="slot-player"
+                  onClick={() => !disabled && onPlayerClick?.(player)}
+                >
+                  <div 
+                    className="slot-avatar"
+                  >
                     {player.foto_url ? (
                       <img src={player.foto_url} alt="" />
                     ) : (

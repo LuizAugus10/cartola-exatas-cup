@@ -17,6 +17,13 @@ export default function BottomNav({ currentView, onNavigate }) {
         <span className="nav-icon">🏆</span>
         <span className="nav-label">Ranking</span>
       </button>
+      <button
+        className={`nav-btn ${currentView === 'games' ? 'active' : ''}`}
+        onClick={() => onNavigate('games')}
+      >
+        <span className="nav-icon">📺</span>
+        <span className="nav-label">Jogos</span>
+      </button>
     </nav>
   );
 }

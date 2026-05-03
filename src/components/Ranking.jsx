@@ -29,11 +29,25 @@ export default function Ranking({ userTelefone }) {
   if (error) return <div className="ranking-error">{error}</div>;
 
   const medals = ['🥇', '🥈', '🥉'];
+  
+  console.log('userTelefone:', userTelefone, 'type:', typeof userTelefone);
+  console.log('ranking[0].telefone:', ranking[0]?.telefone, 'type:', typeof ranking[0]?.telefone);
+  
+  const userPosition = ranking.findIndex(entry => {
+    console.log('comparando:', String(entry.telefone), '===', String(userTelefone), '?', String(entry.telefone) === String(userTelefone));
+    return String(entry.telefone) === String(userTelefone);
+  });
+  const positionText = userPosition >= 0 ? `${userPosition + 1}º` : '—';
 
   return (
     <div className="ranking">
       <div className="ranking-header-bar">
-        <h2>🏆 Ranking</h2>
+        <div className="ranking-header-info">
+          <h2>🏆 Ranking</h2>
+          {userPosition >= 0 && (
+            <span className="ranking-user-position">Você está em {positionText} lugar!</span>
+          )}
+        </div>
         <button className="ranking-refresh" onClick={loadRanking}>↻</button>
       </div>
 

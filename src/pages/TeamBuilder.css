@@ -197,6 +197,12 @@
   color: #ffffff;
   flex-shrink: 0;
   overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reserva-avatar:active {
+  transform: scale(0.9);
 }
 
 .reserva-avatar img {

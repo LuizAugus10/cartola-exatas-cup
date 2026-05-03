@@ -1,0 +1,154 @@
+.games-tab {
+  flex: 1;
+  padding: 16px;
+  padding-bottom: 80px;
+  overflow-y: auto;
+}
+
+.games-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 12px;
+}
+
+.games-header h2 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #144191;
+  margin: 0;
+}
+
+.filter-btn {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 2px solid #e0e0e0;
+  background: white;
+  color: #666;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.filter-btn.active {
+  background: #144191;
+  color: white;
+  border-color: #144191;
+}
+
+.filter-btn:active {
+  transform: scale(0.95);
+}
+
+.games-error {
+  background: #ffe0e0;
+  color: #c00;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.games-empty {
+  text-align: center;
+  padding: 60px 0;
+  color: #999;
+}
+
+.games-empty p {
+  font-size: 15px;
+  margin: 0;
+}
+
+.games-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.game-card {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.game-card.em_andamento {
+  border-color: #fcd303;
+  background: linear-gradient(135deg, #ffffff 0%, #fffef0 100%);
+  box-shadow: 0 2px 8px rgba(252, 211, 3, 0.15);
+}
+
+.game-card.finalizado {
+  background: #f9f9f9;
+}
+
+.game-card:active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.game-content {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.game-team {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+.game-team-name {
+  font-size: 14px;
+  font-weight: 900;
+  color: #1a1a1a;
+  text-transform: capitalize;
+}
+
+.game-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.game-placar {
+  font-size: 32px;
+  font-weight: 900;
+  color: #144191;
+  line-height: 1;
+}
+
+.game-live {
+  font-size: 10px;
+  font-weight: 900;
+  color: #dc3545;
+  letter-spacing: 1px;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.game-finished {
+  font-size: 10px;
+  font-weight: 700;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}

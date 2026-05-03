@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import PlayerCard from './PlayerCard';
+import PlayerStatsModal from './PlayerStatsModal';
 import './PlayerSelectModal.css';
 
 export default function PlayerSelectModal({
@@ -13,6 +14,7 @@ export default function PlayerSelectModal({
 }) {
   const [search, setSearch] = useState('');
   const [teamFilter, setTeamFilter] = useState('');
+  const [statsPlayer, setStatsPlayer] = useState(null);
 
   const teams = useMemo(() => {
     const t = [...new Set(players.filter((p) => p.posicao === positionFilter).map((p) => p.time))];
@@ -83,12 +85,33 @@ export default function PlayerSelectModal({
                 key={p.id}
                 player={p}
                 onSelect={onSelect}
+                onViewStats={(player) => setStatsPlayer(player)}
                 disabled={selectedIds.has(p.id) && currentPlayer?.id !== p.id}
                 selected={currentPlayer?.id === p.id}
+                showStats={false}
               />
             ))
-          )}
+          )}  
         </div>
+
+        <PlayerStatsModal 
+          player={statsPlayer} 
+          onClose={() => setStatsPlayer(null)}
+          isSelecting={true}
+          isSelected={statsPlayer ? selectedIds.has(statsPlayer.id) : false}
+          onAddPlayer={() => {
+            if (statsPlayer) {
+              onSelect(statsPlayer);
+              setStatsPlayer(null);
+            }
+          }}
+          onRemovePlayer={() => {
+            if (statsPlayer && onRemove) {
+              onRemove();
+              setStatsPlayer(null);
+            }
+          }}
+        />
       </div>
     </div>
   );

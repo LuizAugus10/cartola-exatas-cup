@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import TeamBuilder from './pages/TeamBuilder';
 import Mesario from './pages/Mesario';
 import Ranking from './components/Ranking';
+import GamesTab from './pages/GamesTab';
 import './App.css';
 
 function App() {
@@ -60,6 +61,9 @@ function App() {
           )}
           {currentView === 'ranking' && (
             <Ranking userTelefone={user.telefone} />
+          )}
+          {currentView === 'games' && (
+            <GamesTab />
           )}
         </>
       )}

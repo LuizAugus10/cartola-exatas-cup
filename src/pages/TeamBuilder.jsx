@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { getPlayers, getMyTeam, getConfig, saveTeam } from '../services/api';
 import CourtView from '../components/CourtView';
 import PlayerSelectModal from '../components/PlayerSelectModal';
+import PlayerStatsModal from '../components/PlayerStatsModal';
 import Loading from '../components/Loading';
 import './TeamBuilder.css';
 
@@ -14,6 +15,7 @@ export default function TeamBuilder({ user, onToast }) {
   const [saving, setSaving] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalSlot, setModalSlot] = useState(null);
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
 
   useEffect(() => {
     loadData();
@@ -222,6 +224,7 @@ export default function TeamBuilder({ user, onToast }) {
       <CourtView
         titulares={titulares}
         onSlotClick={(index) => handleSlotClick('titular', index)}
+        onPlayerClick={(player) => setSelectedPlayer({ player, group: 'titular', index: titulares.indexOf(player) })}
         onRemovePlayer={handleRemovePlayer}
         disabled={!isMarketOpen}
       />
@@ -236,11 +239,16 @@ export default function TeamBuilder({ user, onToast }) {
             <div
               key={index}
               className={`reserva-slot ${player ? 'filled' : 'empty'}`}
-              onClick={() => isMarketOpen && handleSlotClick('reserva', index)}
+              onClick={() => isMarketOpen && !player && handleSlotClick('reserva', index)}
             >
               {player ? (
-                <div className="reserva-player">
-                  <div className="reserva-avatar">
+                <div 
+                  className="reserva-player"
+                  onClick={() => isMarketOpen && setSelectedPlayer({ player, group: 'reserva', index })}
+                >
+                  <div 
+                    className="reserva-avatar"
+                  >
                     {player.foto_url ? (
                       <img src={player.foto_url} alt="" />
                     ) : (
@@ -313,6 +321,19 @@ export default function TeamBuilder({ user, onToast }) {
           currentPlayer={currentSlotPlayer}
         />
       )}
+
+      <PlayerStatsModal 
+        player={selectedPlayer?.player} 
+        onClose={() => setSelectedPlayer(null)} 
+        isSelecting={!!selectedPlayer}
+        isSelected={true}
+        onRemovePlayer={() => {
+          if (selectedPlayer) {
+            handleRemovePlayer(selectedPlayer.group, selectedPlayer.index);
+            setSelectedPlayer(null);
+          }
+        }}
+      />
     </div>
   );
 }

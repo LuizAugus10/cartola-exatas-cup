@@ -121,3 +121,48 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.fut-card-stats-footer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  padding: 4px;
+  background: #f9f9f9;
+  border-top: 1px solid #e0e0e0;
+}
+
+.stats-icon {
+  padding: 3px 4px;
+  font-size: 9px;
+  font-weight: 600;
+  border: none;
+  background: white;
+  color: #666;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stats-icon:active {
+  transform: scale(0.95);
+  background: #f0f0f0;
+}
+
+.stats-gols {
+  color: #d4edda;
+}
+
+.stats-assist {
+  color: #d1ecf1;
+}
+
+.stats-amarelo {
+  color: #fff3cd;
+}
+
+.stats-vermelho {
+  color: #f8d7da;
+}
