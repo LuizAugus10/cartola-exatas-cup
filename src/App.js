@@ -68,10 +68,12 @@ function App() {
         </>
       )}
 
-      <BottomNav 
-        currentView={currentView} 
-        onNavigate={setCurrentView}
-      />
+      {user.tipo !== 'mesario' && (
+        <BottomNav 
+          currentView={currentView} 
+          onNavigate={setCurrentView}
+        />
+      )}
 
       {toast && (
         <div className={`toast ${toast.type}`}>{toast.message}</div>
