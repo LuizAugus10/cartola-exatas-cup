@@ -31,7 +31,7 @@ export default function PlayerSelectModal({
         return p.nome.toLowerCase().includes(s) || p.time.toLowerCase().includes(s);
       }
       return true;
-    });
+    }).sort((a, b) => b.preco - a.preco);
   }, [players, positionFilter, teamFilter, search]);
 
   return (
