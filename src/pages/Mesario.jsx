@@ -68,16 +68,6 @@ export default function Mesario({ user, onToast }) {
         />
       )}
 
-      {jogoAbertoId && jogoAbertoId !== 'novo' && (
-        <PartidaScreen
-          user={user}
-          jogoId={jogoAbertoId}
-          jogo={jogos.find(j => j.id === jogoAbertoId) || {}}
-          onVoltar={handleVoltar}
-          onToast={onToast}
-        />
-      )}
-
       {!jogoAbertoId && (
         <div className="jogos-list">
           {jogos.length === 0 ? (
@@ -113,6 +103,16 @@ export default function Mesario({ user, onToast }) {
             ))
           )}
         </div>
+      )}
+
+      {jogoAbertoId && jogoAbertoId !== 'novo' && (
+        <PartidaScreen
+          user={user}
+          jogoId={jogoAbertoId}
+          jogo={jogos.find(j => j.id === jogoAbertoId) || {}}
+          onVoltar={handleVoltar}
+          onToast={onToast}
+        />
       )}
     </div>
   );

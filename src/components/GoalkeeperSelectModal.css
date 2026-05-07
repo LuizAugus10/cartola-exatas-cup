@@ -1,0 +1,164 @@
+.gk-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.gk-modal {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 400px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.gk-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.gk-close:hover {
+  background-color: #f0f0f0;
+}
+
+.gk-header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding-right: 32px;
+}
+
+.gk-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #144191;
+  margin: 0 0 8px 0;
+}
+
+.gk-header p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.gk-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gk-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.gk-card:hover {
+  border-color: #144191;
+  background-color: #f8f9fa;
+}
+
+.gk-card:active {
+  transform: scale(0.98);
+}
+
+.gk-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #144191, #1a4d9e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 20px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.gk-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gk-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gk-nome {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1a1a1a;
+}
+
+.gk-time {
+  font-size: 12px;
+  color: #666;
+  text-transform: capitalize;
+}
+
+.gk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #fcd303;
+  color: #144191;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  width: fit-content;
+}
+
+.gk-select-btn {
+  background-color: #6aa84f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.gk-select-btn:hover {
+  background-color: #5a9e3f;
+}
+
+.gk-select-btn:active {
+  transform: scale(0.95);
+}

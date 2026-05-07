@@ -116,6 +116,49 @@
   padding: 8px 0;
 }
 
+.selecao-fases {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.selecao-radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.selecao-radio:hover {
+  border-color: #144191;
+  background-color: #f8f9fa;
+}
+
+.selecao-radio input[type="radio"] {
+  cursor: pointer;
+  accent-color: #144191;
+}
+
+.selecao-radio input[type="radio"]:checked + span {
+  font-weight: 700;
+  color: #144191;
+}
+
+.selecao-radio:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.selecao-radio span {
+  flex: 1;
+  font-size: 13px;
+  color: #333;
+}
+
 .selecao-actions {
   display: flex;
   gap: 12px;

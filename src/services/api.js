@@ -1,5 +1,5 @@
 const BASE_URL =
-  'https://script.google.com/macros/s/AKfycbydy1gLo2A8u0RGIMX3rwwYIRpy4t5N_2sUxSXKvAFT8nDBfQFeRjQql-oo0Yp1kyESKg/exec';
+  'https://script.google.com/macros/s/AKfycbw-8nTa3UjlIx1NNdnC5F7COtniI39OwqldlM9cVTTWBkRe-Arj5X3_netfsmDLfkP7Cg/exec';
 
 async function fetchAPI(params) {
   const query = Object.entries(params)
@@ -29,15 +29,15 @@ export const getRanking = () => fetchAPI({ action: 'getRanking' });
 // 🎮 Jogos
 export const getJogos = () => fetchAPI({ action: 'getJogos' });
 
-export const criarJogo = (telefone, timeA, timeB) => 
-  fetchAPI({ action: 'criarJogo', telefone, timeA, timeB });
+export const criarJogo = (telefone, timeA, timeB, fase = 'grupo') => 
+  fetchAPI({ action: 'criarJogo', telefone, timeA, timeB, fase });
 
 export const encerrarJogo = (telefone, jogo_id) => 
   fetchAPI({ action: 'encerrarJogo', telefone, jogo_id });
 
 // 📝 Eventos
-export const registrarEvento = (telefone, jogo_id, jogador_id, tipo) => 
-  fetchAPI({ action: 'registrarEvento', telefone, jogo_id, jogador_id, tipo });
+export const registrarEvento = (telefone, jogo_id, jogador_id, tipo, goleiro_id) => 
+  fetchAPI({ action: 'registrarEvento', telefone, jogo_id, jogador_id, tipo, ...(goleiro_id && { goleiro_id }) });
 
 export const removerEvento = (telefone, evento_id) => 
   fetchAPI({ action: 'removerEvento', telefone, evento_id });

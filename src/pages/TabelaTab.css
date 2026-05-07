@@ -1,0 +1,163 @@
+.tabela-tab {
+  flex: 1;
+  padding: 16px;
+  padding-bottom: 80px;
+  overflow-y: auto;
+}
+
+.tabela-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 12px;
+}
+
+.tabela-header h2 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #144191;
+  margin: 0;
+}
+
+.tabela-refresh {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #e0e0e0;
+  background: white;
+  color: #144191;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tabela-refresh:hover {
+  border-color: #144191;
+  background-color: #f8f9fa;
+}
+
+.tabela-refresh:active {
+  transform: scale(0.9);
+}
+
+.tabelas-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.tabela-grupo {
+  background: white;
+  border-radius: 12px;
+  border: 2px solid #e0e0e0;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.tabela-titulo {
+  font-size: 18px;
+  font-weight: 700;
+  color: #144191;
+  margin: 0 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tabela-wrapper {
+  overflow-x: auto;
+  margin-bottom: 8px;
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.tabela thead {
+  background-color: #f8f9fa;
+}
+
+.tabela th {
+  padding: 10px 6px;
+  text-align: center;
+  font-weight: 700;
+  color: #333;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tabela th.col-pos {
+  width: 30px;
+  text-align: center;
+}
+
+.tabela th.col-time {
+  text-align: left;
+  width: auto;
+  padding-left: 12px;
+}
+
+.tabela th.col-num {
+  width: 30px;
+}
+
+.tabela th.col-pts {
+  width: 35px;
+  font-weight: 900;
+  color: #144191;
+}
+
+.tabela tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+  transition: background-color 0.2s;
+}
+
+.tabela tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.tabela tbody tr.classificado {
+  background-color: #e8f5e9;
+}
+
+.tabela tbody tr.classificado:hover {
+  background-color: #c8e6c9;
+}
+
+.tabela td {
+  padding: 10px 6px;
+  text-align: center;
+  color: #333;
+}
+
+.tabela td.col-time {
+  text-align: left;
+  padding-left: 12px;
+  font-weight: 600;
+  color: #144191;
+}
+
+.tabela td.col-pos {
+  font-weight: 700;
+  color: #666;
+  width: 30px;
+}
+
+.tabela td.col-pts {
+  font-weight: 900;
+  color: #144191;
+  width: 35px;
+  font-size: 14px;
+}
+
+.tabela-nota {
+  font-size: 12px;
+  color: #666;
+  margin: 8px 0 0 0;
+  font-style: italic;
+}

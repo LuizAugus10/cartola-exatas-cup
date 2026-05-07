@@ -9,7 +9,15 @@ export default function SelecaoTimes({ user, onJogoCriado, onCancel }) {
   const [error, setError] = useState('');
   const [timeA, setTimeA] = useState('');
   const [timeB, setTimeB] = useState('');
+  const [fase, setFase] = useState('grupo');
   const [criando, setCriando] = useState(false);
+
+  const fases = [
+    { value: 'grupo', label: 'Grupo' },
+    { value: 'semi', label: 'Semifinal' },
+    { value: 'terceiro', label: 'Terceiro Lugar' },
+    { value: 'final', label: 'Final' }
+  ];
 
   useEffect(() => {
     fetchTimes();
@@ -46,7 +54,7 @@ export default function SelecaoTimes({ user, onJogoCriado, onCancel }) {
 
     try {
       setCriando(true);
-      const result = await criarJogo(user.telefone, timeA, timeB);
+      const result = await criarJogo(user.telefone, timeA, timeB, fase);
       if (result.success) {
         onJogoCriado(result.jogo_id);
       } else {
@@ -106,6 +114,24 @@ export default function SelecaoTimes({ user, onJogoCriado, onCancel }) {
               </option>
             ))}
           </select>
+        </div>
+
+        <div className="selecao-section">
+          <label className="selecao-label">Fase</label>
+          <div className="selecao-fases">
+            {fases.map((f) => (
+              <label key={f.value} className="selecao-radio">
+                <input
+                  type="radio"
+                  value={f.value}
+                  checked={fase === f.value}
+                  onChange={(e) => setFase(e.target.value)}
+                  disabled={criando}
+                />
+                <span>{f.label}</span>
+              </label>
+            ))}
+          </div>
         </div>
 
         <div className="selecao-actions">

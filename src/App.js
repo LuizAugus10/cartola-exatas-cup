@@ -6,6 +6,7 @@ import TeamBuilder from './pages/TeamBuilder';
 import Mesario from './pages/Mesario';
 import Ranking from './components/Ranking';
 import GamesTab from './pages/GamesTab';
+import TabelaTab from './pages/TabelaTab';
 import './App.css';
 
 function App() {
@@ -63,7 +64,10 @@ function App() {
             <Ranking userTelefone={user.telefone} />
           )}
           {currentView === 'games' && (
-            <GamesTab />
+            <GamesTab user={user} onToast={showToast} />
+          )}
+          {currentView === 'tabela' && (
+            <TabelaTab onToast={showToast} />
           )}
         </>
       )}
@@ -72,6 +76,7 @@ function App() {
         <BottomNav 
           currentView={currentView} 
           onNavigate={setCurrentView}
+          user={user}
         />
       )}
 

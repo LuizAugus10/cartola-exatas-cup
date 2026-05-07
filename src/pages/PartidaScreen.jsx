@@ -8,40 +8,80 @@ import {
   getJogos,
 } from '../services/api';
 import Loading from '../components/Loading';
+import GoalkeeperSelectModal from '../components/GoalkeeperSelectModal';
 import './PartidaScreen.css';
 
 export default function PartidaScreen({ user, jogoId, jogo, onVoltar, onToast }) {
   const [tab, setTab] = useState('registrar');
   const [jogadores, setJogadores] = useState([]);
   const [eventos, setEventos] = useState([]);
-  const [jogoAtual, setJogoAtual] = useState(jogo);
+  const [jogoAtual, setJogoAtual] = useState(
+    jogo || { 
+      timeA: '', 
+      timeB: '', 
+      golsA: 0, 
+      golsB: 0, 
+      id: jogoId 
+    }
+  );
   const [loading, setLoading] = useState(true);
   const [registrando, setRegistrando] = useState(false);
   const [deletando, setDeletando] = useState(false);
   const [faltasA, setFaltasA] = useState(0);
   const [faltasB, setFaltasB] = useState(0);
+  const [showGKModal, setShowGKModal] = useState(false);
+  const [selectedGoalkeepers, setSelectedGoalkeepers] = useState([]);
+  const [pendingGoal, setPendingGoal] = useState(null);
 
   useEffect(() => {
     setJogoAtual(jogo);
   }, [jogo]);
 
   useEffect(() => {
-    carregarDados();
+    setLoading(true);
+    
+    const loadInitial = async () => {
+      if (!jogoId) {
+        console.error('jogoId inválido:', jogoId);
+        setLoading(false);
+        return;
+      }
+      
+      try {
+        const [playersData, eventosData] = await Promise.all([
+          getPlayers(),
+          getEventosByJogo(jogoId),
+        ]);
+        
+        setJogadores(Array.isArray(playersData) ? playersData : []);
+        setEventos(Array.isArray(eventosData) ? eventosData : []);
+      } catch (err) {
+        console.error('Erro ao carregar dados iniciais:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadInitial();
+    
+    // Iniciar polling após carregamento inicial
     const interval = setInterval(carregarDados, 2000);
     return () => clearInterval(interval);
   }, [jogoId]);
 
   const carregarDados = async () => {
     try {
+      if (!jogoId) return;
+
       const [playersData, eventosData] = await Promise.all([
         getPlayers(),
         getEventosByJogo(jogoId),
       ]);
-      setJogadores(playersData || []);
-      setEventos(eventosData || []);
-      setLoading(false);
+      
+      setJogadores(Array.isArray(playersData) ? playersData : []);
+      setEventos(Array.isArray(eventosData) ? eventosData : []);
     } catch (err) {
-      console.error('Erro ao carregar dados:', err);
+      console.error('Erro no polling de dados:', err);
     }
   };
 
@@ -61,8 +101,89 @@ export default function PartidaScreen({ user, jogoId, jogo, onVoltar, onToast })
     (j) => j.time === jogoAtual.timeA || j.time === jogoAtual.timeB
   );
 
-  const handleRegistrarEvento = async (jogadorId, tipo) => {
+  const renderBotoesEvento = (jogador) => {
+    const isGoleiro = jogador.posicao.toLowerCase() === 'goleiro';
+    
+    return (
+      <>
+        <div className="evento-botoes-row">
+          <button
+            className="evento-btn evento-gol"
+            onClick={() => handleRegistrarEvento(jogador.id, 'gol')}
+            title="Gol"
+          >
+            ⚽
+          </button>
+          <button
+            className="evento-btn evento-assist"
+            onClick={() => handleRegistrarEvento(jogador.id, 'assistencia')}
+            title="Assistência"
+          >
+            🅐
+          </button>
+        </div>
+        <div className="evento-botoes-row">
+          <button
+            className="evento-btn evento-amarelo"
+            onClick={() => handleRegistrarEvento(jogador.id, 'cartao_amarelo')}
+            title="Cartão Amarelo"
+          >
+            🟨
+          </button>
+          <button
+            className="evento-btn evento-vermelho"
+            onClick={() => handleRegistrarEvento(jogador.id, 'cartao_vermelho')}
+            title="Cartão Vermelho"
+          >
+            🟥
+          </button>
+        </div>
+        {isGoleiro && (
+          <div className="evento-botoes-row">
+            <button
+              className="evento-btn evento-defesa"
+              onClick={() => handleRegistrarEvento(jogador.id, 'defesa')}
+              title="Defesa"
+            >
+              🧤
+            </button>
+            <button
+              className="evento-btn evento-penalti"
+              onClick={() => handleRegistrarEvento(jogador.id, 'penalti_defendido')}
+              title="Penalti Defendido"
+            >
+              🎯
+            </button>
+          </div>
+        )}
+      </>
+    );
+  };
+
+  const handleRegistrarEvento = async (jogadorId, tipo, goleiroDelegado = null) => {
     try {
+      // Se é gol e não tem goleiro delegado, verificar se precisa de modal
+      if (tipo === 'gol' && !goleiroDelegado) {
+        const jogador = jogadores.find(j => j.id === jogadorId);
+        if (jogador) {
+          // Determine qual time sofreu o gol
+          const timeSofreu = jogador.time === jogoAtual.timeA ? jogoAtual.timeB : jogoAtual.timeA;
+          
+          // Buscar goleiros do time que sofreu
+          const goleiros = jogadores.filter(
+            j => j.time === timeSofreu && j.posicao.toLowerCase() === 'goleiro'
+          );
+          
+          // Se tem 2+ goleiros, abrir modal
+          if (goleiros.length > 1) {
+            setSelectedGoalkeepers(goleiros);
+            setPendingGoal(jogadorId);
+            setShowGKModal(true);
+            return;
+          }
+        }
+      }
+
       // Salva estado anterior pra rollback
       const estadoAnterior = { ...jogoAtual };
       
@@ -78,8 +199,14 @@ export default function PartidaScreen({ user, jogoId, jogo, onVoltar, onToast })
         }
       }
 
-      // Envia pro backend
-      const result = await registrarEvento(user.telefone, jogoId, jogadorId, tipo);
+      // Envia pro backend com goleiro_id se houver
+      const result = await registrarEvento(
+        user.telefone,
+        jogoId,
+        jogadorId,
+        tipo,
+        goleiroDelegado
+      );
       
       if (result.success) {
         onToast(`${tipo} registrado!`);
@@ -95,6 +222,15 @@ export default function PartidaScreen({ user, jogoId, jogo, onVoltar, onToast })
       // Rollback em caso de erro de rede
       onToast('Erro de conexão', 'error');
       console.error(err);
+    }
+  };
+
+  const handleSelectGoleiro = (goleiroDelegado) => {
+    if (pendingGoal) {
+      handleRegistrarEvento(pendingGoal, 'gol', goleiroDelegado);
+      setShowGKModal(false);
+      setPendingGoal(null);
+      setSelectedGoalkeepers([]);
     }
   };
 
@@ -132,6 +268,16 @@ export default function PartidaScreen({ user, jogoId, jogo, onVoltar, onToast })
   };
 
   if (loading) return <Loading text="Carregando partida..." />;
+
+  // Validação de dados
+  if (!jogoAtual || !jogoAtual.timeA || !jogoAtual.timeB) {
+    return (
+      <div className="partida-screen">
+        <button className="partida-voltar" onClick={onVoltar}>← Voltar</button>
+        <p style={{ padding: '20px', color: '#f44336' }}>Erro ao carregar partida. Verifique os dados.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="partida-screen">
@@ -197,44 +343,33 @@ export default function PartidaScreen({ user, jogoId, jogo, onVoltar, onToast })
                     const ordem = { GOLEIRO: 0, PIVÔ: 1, ALA: 2, FIXO: 3 };
                     return (ordem[a.posicao] || 99) - (ordem[b.posicao] || 99);
                   })
-                  .map((jogador) => (
-                    <div key={jogador.id} className="jogador-card-compacto">
-                      <div className="jogador-info-compacta">
-                        <div className="jogador-nome-compacta">{jogador.nome}</div>
-                        <div className="jogador-posicao-compacta">{jogador.posicao}</div>
+                  .map((jogador) => {
+                    const isGoleiro = jogador.posicao.toLowerCase() === 'goleiro';
+                    const defesaCount = eventos.filter(
+                      (e) => e.jogador_id === jogador.id && e.tipo === 'defesa'
+                    ).length;
+                    const penaltiCount = eventos.filter(
+                      (e) => e.jogador_id === jogador.id && e.tipo === 'penalti_defendido'
+                    ).length;
+
+                    return (
+                      <div key={jogador.id} className="jogador-card-compacto">
+                        <div className="jogador-info-compacta">
+                          <div className="jogador-nome-compacta">{jogador.nome}</div>
+                          <div className="jogador-posicao-compacta">{jogador.posicao}</div>
+                          {isGoleiro && (defesaCount > 0 || penaltiCount > 0) && (
+                            <div className="jogador-stats-gk">
+                              {defesaCount > 0 && <span>🧤 {defesaCount}</span>}
+                              {penaltiCount > 0 && <span>🎯 {penaltiCount}</span>}
+                            </div>
+                          )}
+                        </div>
+                        <div className="jogador-acoes-compacta">
+                          {renderBotoesEvento(jogador)}
+                        </div>
                       </div>
-                      <div className="jogador-acoes-compacta">
-                        <button
-                          className="evento-btn evento-gol"
-                          onClick={() => handleRegistrarEvento(jogador.id, 'gol')}
-                          title="Gol"
-                        >
-                          ⚽
-                        </button>
-                        <button
-                          className="evento-btn evento-assist"
-                          onClick={() => handleRegistrarEvento(jogador.id, 'assistencia')}
-                          title="Assistência"
-                        >
-                          🅐
-                        </button>
-                        <button
-                          className="evento-btn evento-amarelo"
-                          onClick={() => handleRegistrarEvento(jogador.id, 'cartao_amarelo')}
-                          title="Cartão Amarelo"
-                        >
-                          🟨
-                        </button>
-                        <button
-                          className="evento-btn evento-vermelho"
-                          onClick={() => handleRegistrarEvento(jogador.id, 'cartao_vermelho')}
-                          title="Cartão Vermelho"
-                        >
-                          🟥
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
               </div>
             </div>
             <div className="jogadores-placar">{jogoAtual.golsA} × {jogoAtual.golsB}</div>
@@ -247,44 +382,33 @@ export default function PartidaScreen({ user, jogoId, jogo, onVoltar, onToast })
                     const ordem = { GOLEIRO: 0, PIVÔ: 1, ALA: 2, FIXO: 3 };
                     return (ordem[a.posicao] || 99) - (ordem[b.posicao] || 99);
                   })
-                  .map((jogador) => (
-                    <div key={jogador.id} className="jogador-card-compacto">
-                      <div className="jogador-info-compacta">
-                        <div className="jogador-nome-compacta">{jogador.nome}</div>
-                        <div className="jogador-posicao-compacta">{jogador.posicao}</div>
+                  .map((jogador) => {
+                    const isGoleiro = jogador.posicao.toLowerCase() === 'goleiro';
+                    const defesaCount = eventos.filter(
+                      (e) => e.jogador_id === jogador.id && e.tipo === 'defesa'
+                    ).length;
+                    const penaltiCount = eventos.filter(
+                      (e) => e.jogador_id === jogador.id && e.tipo === 'penalti_defendido'
+                    ).length;
+
+                    return (
+                      <div key={jogador.id} className="jogador-card-compacto">
+                        <div className="jogador-info-compacta">
+                          <div className="jogador-nome-compacta">{jogador.nome}</div>
+                          <div className="jogador-posicao-compacta">{jogador.posicao}</div>
+                          {isGoleiro && (defesaCount > 0 || penaltiCount > 0) && (
+                            <div className="jogador-stats-gk">
+                              {defesaCount > 0 && <span>🧤 {defesaCount}</span>}
+                              {penaltiCount > 0 && <span>🎯 {penaltiCount}</span>}
+                            </div>
+                          )}
+                        </div>
+                        <div className="jogador-acoes-compacta">
+                          {renderBotoesEvento(jogador)}
+                        </div>
                       </div>
-                      <div className="jogador-acoes-compacta">
-                        <button
-                          className="evento-btn evento-gol"
-                          onClick={() => handleRegistrarEvento(jogador.id, 'gol')}
-                          title="Gol"
-                        >
-                          ⚽
-                        </button>
-                        <button
-                          className="evento-btn evento-assist"
-                          onClick={() => handleRegistrarEvento(jogador.id, 'assistencia')}
-                          title="Assistência"
-                        >
-                          🅐
-                        </button>
-                        <button
-                          className="evento-btn evento-amarelo"
-                          onClick={() => handleRegistrarEvento(jogador.id, 'cartao_amarelo')}
-                          title="Cartão Amarelo"
-                        >
-                          🟨
-                        </button>
-                        <button
-                          className="evento-btn evento-vermelho"
-                          onClick={() => handleRegistrarEvento(jogador.id, 'cartao_vermelho')}
-                          title="Cartão Vermelho"
-                        >
-                          🟥
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
               </div>
             </div>
           </div>
@@ -317,6 +441,17 @@ export default function PartidaScreen({ user, jogoId, jogo, onVoltar, onToast })
           </div>
         </div>
       )}
+
+      <GoalkeeperSelectModal
+        isOpen={showGKModal}
+        onClose={() => {
+          setShowGKModal(false);
+          setPendingGoal(null);
+          setSelectedGoalkeepers([]);
+        }}
+        goalkeepers={selectedGoalkeepers}
+        onSelect={handleSelectGoleiro}
+      />
     </div>
   );
 }

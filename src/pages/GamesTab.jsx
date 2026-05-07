@@ -1,19 +1,33 @@
 import { useState, useEffect } from 'react';
-import { getJogos } from '../services/api';
+import { getJogos, criarJogo, getPlayers } from '../services/api';
 import Loading from '../components/Loading';
+import NewGameModal from '../components/NewGameModal';
 import './GamesTab.css';
 
-export default function GamesTab() {
+export default function GamesTab({ user, onToast }) {
   const [jogos, setJogos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [filterStatus, setFilterStatus] = useState('finalizado');
+  const [showNewGameModal, setShowNewGameModal] = useState(false);
+  const [teams, setTeams] = useState([]);
 
   useEffect(() => {
     fetchJogos();
+    loadTeams();
     const interval = setInterval(fetchJogos, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  const loadTeams = async () => {
+    try {
+      const playersData = await getPlayers();
+      const teamsList = [...new Set(playersData.map(p => p.time))];
+      setTeams(teamsList);
+    } catch (err) {
+      console.error('Erro ao carregar times:', err);
+    }
+  };
 
   const fetchJogos = async () => {
     try {
@@ -25,6 +39,21 @@ export default function GamesTab() {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleNovoJogo = async (timeA, timeB, fase) => {
+    try {
+      const result = await criarJogo(user.telefone, timeA, timeB, fase);
+      if (result.success) {
+        onToast('Jogo criado com sucesso!');
+        fetchJogos();
+      } else {
+        onToast('Erro ao criar jogo', 'error');
+      }
+    } catch (err) {
+      onToast('Erro ao criar jogo', 'error');
+      console.error(err);
     }
   };
 
@@ -41,6 +70,14 @@ export default function GamesTab() {
     <div className="games-tab">
       <div className="games-header">
         <h2>Jogos</h2>
+        {user && user.tipo === 'mesario' && (
+          <button 
+            className="btn-novo-jogo"
+            onClick={() => setShowNewGameModal(true)}
+          >
+            ➕ Novo Jogo
+          </button>
+        )}
         <button 
           className={`filter-btn ${filterStatus === 'finalizado' ? 'active' : ''}`}
           onClick={() => setFilterStatus('finalizado')}
@@ -93,6 +130,13 @@ export default function GamesTab() {
           ))}
         </div>
       )}
+
+      <NewGameModal
+        isOpen={showNewGameModal}
+        onClose={() => setShowNewGameModal(false)}
+        teams={teams}
+        onSubmit={handleNovoJogo}
+      />
     </div>
   );
 }

@@ -1,6 +1,8 @@
 import './BottomNav.css';
 
-export default function BottomNav({ currentView, onNavigate }) {
+export default function BottomNav({ currentView, onNavigate, user }) {
+  const isMesario = user && user.tipo === 'mesario';
+
   return (
     <nav className="bottom-nav">
       <button
@@ -17,6 +19,15 @@ export default function BottomNav({ currentView, onNavigate }) {
         <span className="nav-icon">🏆</span>
         <span className="nav-label">Ranking</span>
       </button>
+      {isMesario && (
+        <button
+          className={`nav-btn ${currentView === 'tabela' ? 'active' : ''}`}
+          onClick={() => onNavigate('tabela')}
+        >
+          <span className="nav-icon">📊</span>
+          <span className="nav-label">Tabela</span>
+        </button>
+      )}
       <button
         className={`nav-btn ${currentView === 'games' ? 'active' : ''}`}
         onClick={() => onNavigate('games')}
