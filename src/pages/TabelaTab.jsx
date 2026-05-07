@@ -28,9 +28,7 @@ export default function TabelaTab({ onToast }) {
   };
 
   const handleRefresh = async () => {
-    console.log("oi");
     await loadJogos();
-    console.log(jogos);
     onToast("Tabela atualizada");
   };
 
@@ -40,8 +38,6 @@ export default function TabelaTab({ onToast }) {
     );
 
     const stats = {};
-    console.log("gptms");
-    console.log(grupoTimes);
     grupoTimes.forEach((time) => {
       stats[time] = {
         time,
@@ -54,19 +50,8 @@ export default function TabelaTab({ onToast }) {
         pontos: 0,
       };
     });
-    console.log("aqui");
-
-    console.log(jogosFase);
-    console.log(grupoTimes);
 
     jogosFase.forEach((jogo) => {
-      console.log("tou aqui");
-      console.log(" começando");
-      console.log(jogo);
-      console.log(jogo.timeA);
-      console.log(stats);
-      console.log(stats[jogo.timeA]);
-
       if (grupoTimes.includes(jogo.timeA) && grupoTimes.includes(jogo.timeB)) {
         const golsA = Number(jogo.golsA) || 0;
         const golsB = Number(jogo.golsB) || 0;

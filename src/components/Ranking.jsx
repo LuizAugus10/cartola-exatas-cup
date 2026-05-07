@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { getRanking } from '../services/api';
-import Loading from './Loading';
-import './Ranking.css';
+import { useEffect, useState } from "react";
+import { getRanking } from "../services/api";
+import Loading from "./Loading";
+import "./Ranking.css";
 
 export default function Ranking({ userTelefone }) {
   const [ranking, setRanking] = useState([]);
@@ -19,7 +19,7 @@ export default function Ranking({ userTelefone }) {
       const data = await getRanking();
       setRanking(data);
     } catch (err) {
-      setError('Erro ao carregar ranking');
+      setError("Erro ao carregar ranking");
     } finally {
       setLoading(false);
     }
@@ -28,16 +28,12 @@ export default function Ranking({ userTelefone }) {
   if (loading) return <Loading text="Carregando ranking..." />;
   if (error) return <div className="ranking-error">{error}</div>;
 
-  const medals = ['🥇', '🥈', '🥉'];
-  
-  console.log('userTelefone:', userTelefone, 'type:', typeof userTelefone);
-  console.log('ranking[0].telefone:', ranking[0]?.telefone, 'type:', typeof ranking[0]?.telefone);
-  
-  const userPosition = ranking.findIndex(entry => {
-    console.log('comparando:', String(entry.telefone), '===', String(userTelefone), '?', String(entry.telefone) === String(userTelefone));
+  const medals = ["🥇", "🥈", "🥉"];
+
+  const userPosition = ranking.findIndex((entry) => {
     return String(entry.telefone) === String(userTelefone);
   });
-  const positionText = userPosition >= 0 ? `${userPosition + 1}º` : '—';
+  const positionText = userPosition >= 0 ? `${userPosition + 1}º` : "—";
 
   return (
     <div className="ranking">
@@ -45,10 +41,14 @@ export default function Ranking({ userTelefone }) {
         <div className="ranking-header-info">
           <h2>🏆 Ranking</h2>
           {userPosition >= 0 && (
-            <span className="ranking-user-position">Você está em {positionText} lugar!</span>
+            <span className="ranking-user-position">
+              Você está em {positionText} lugar!
+            </span>
           )}
         </div>
-        <button className="ranking-refresh" onClick={loadRanking}>↻</button>
+        <button className="ranking-refresh" onClick={loadRanking}>
+          ↻
+        </button>
       </div>
 
       {ranking.length === 0 ? (
@@ -58,7 +58,7 @@ export default function Ranking({ userTelefone }) {
           {ranking.map((entry, i) => (
             <div
               key={i}
-              className={`ranking-item ${entry.telefone === userTelefone ? 'mine' : ''} ${i < 3 ? 'top3' : ''}`}
+              className={`ranking-item ${entry.telefone === userTelefone ? "mine" : ""} ${i < 3 ? "top3" : ""}`}
             >
               <span className="ranking-pos">
                 {i < 3 ? medals[i] : `${i + 1}º`}
