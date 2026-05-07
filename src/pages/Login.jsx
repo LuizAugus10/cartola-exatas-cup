@@ -1,34 +1,34 @@
-import { useState } from 'react';
-import { login as apiLogin } from '../services/api';
-import Loading from '../components/Loading';
-import './Login.css';
+import { useState } from "react";
+import Loading from "../components/Loading";
+import { login as apiLogin } from "../services/api";
+import "./Login.css";
 
 export default function Login({ onLogin }) {
-  const [step, setStep] = useState('phone');
-  const [telefone, setTelefone] = useState('');
-  const [userName, setUserName] = useState('');
-  const [userType, setUserType] = useState('');
+  const [step, setStep] = useState("phone");
+  const [telefone, setTelefone] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userType, setUserType] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!telefone.trim()) return;
 
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       const result = await apiLogin(telefone.trim());
       if (result.success) {
         setUserName(result.nome);
-        setUserType(result.tipo || 'user');
-        setStep('confirm');
+        setUserType(result.tipo || "user");
+        setStep("confirm");
       } else {
-        setError('Telefone não encontrado. Verifique o número.');
+        setError("Código de acesso não encontrado. Verifique o código.");
       }
     } catch (err) {
-      setError('Erro de conexão. Tente novamente.');
+      setError("Erro de conexão. Tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -39,33 +39,35 @@ export default function Login({ onLogin }) {
   };
 
   const handleBack = () => {
-    setStep('phone');
-    setTelefone('');
-    setUserName('');
-    setUserType('');
-    setError('');
+    setStep("phone");
+    setTelefone("");
+    setUserName("");
+    setUserType("");
+    setError("");
   };
 
   return (
     <div className="login">
       <div className="login-card">
         <div className="login-logo-container">
-          <img 
-            src="/logo-exatas.png" 
-            alt="Fantasy Exatas Cup" 
+          <img
+            src="/logo-exatas.png"
+            alt="Fantasy Exatas Cup"
             className="login-logo-image"
           />
         </div>
         <h1 className="login-title">Fantasy Exatas Cup</h1>
-        <p className="login-subtitle">Monte seu time e dispute o campeonato do futsal!</p>
+        <p className="login-subtitle">
+          Monte seu time e dispute o campeonato do futsal!
+        </p>
 
-        {step === 'phone' && (
+        {step === "phone" && (
           <form onSubmit={handleSubmit} className="login-form">
             <input
               type="tel"
               className="login-input"
-              placeholder="Digite seu telefone"
-              value={telefone}
+              placeholder="Digite seu Código de Acesso"
+              value={Código}
               onChange={(e) => setTelefone(e.target.value)}
               disabled={loading}
               autoFocus
@@ -81,7 +83,7 @@ export default function Login({ onLogin }) {
           </form>
         )}
 
-        {step === 'confirm' && (
+        {step === "confirm" && (
           <div className="login-confirm">
             <div className="login-confirm-box">
               <p className="login-confirm-label">Esse é o time de</p>
@@ -93,7 +95,7 @@ export default function Login({ onLogin }) {
                 Sim, continuar
               </button>
               <button className="login-btn-secondary" onClick={handleBack}>
-                Não, trocar número
+                Não, trocar código de acesso
               </button>
             </div>
           </div>
