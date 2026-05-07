@@ -1,11 +1,11 @@
-import { useState, useEffect, useMemo } from 'react';
-import { getJogos } from '../services/api';
-import Loading from '../components/Loading';
-import './TabelaTab.css';
+import { useEffect, useMemo, useState } from "react";
+import Loading from "../components/Loading";
+import { getJogos } from "../services/api";
+import "./TabelaTab.css";
 
 const GRUPOS = {
-  A: ['irracionais', 'paysandu', 'panela furada', 'seleção'],
-  B: ['nicotinados', 'seleest', 'claude code', 'estatball']
+  A: ["irracionais", "paysandu", "panela", "selecic"],
+  B: ["nicotinados", "selest", "claude code", "estatball"],
 };
 
 export default function TabelaTab({ onToast }) {
@@ -22,21 +22,27 @@ export default function TabelaTab({ onToast }) {
       setJogos(Array.isArray(data) ? data : []);
       setLoading(false);
     } catch (err) {
-      console.error('Erro ao carregar jogos:', err);
+      console.error("Erro ao carregar jogos:", err);
       setLoading(false);
     }
   };
 
   const handleRefresh = async () => {
+    console.log("oi");
     await loadJogos();
-    onToast('Tabela atualizada');
+    console.log(jogos);
+    onToast("Tabela atualizada");
   };
 
   const calculateStats = (grupoTimes) => {
-    const jogosFase = jogos.filter(jogo => jogo.fase === 'grupo' && jogo.status === 'finalizado');
-    
+    const jogosFase = jogos.filter(
+      (jogo) => jogo.fase === "grupo" && jogo.status === "finalizado",
+    );
+
     const stats = {};
-    grupoTimes.forEach(time => {
+    console.log("gptms");
+    console.log(grupoTimes);
+    grupoTimes.forEach((time) => {
       stats[time] = {
         time,
         jogos: 0,
@@ -45,11 +51,22 @@ export default function TabelaTab({ onToast }) {
         derrotas: 0,
         gf: 0,
         ga: 0,
-        pontos: 0
+        pontos: 0,
       };
     });
+    console.log("aqui");
 
-    jogosFase.forEach(jogo => {
+    console.log(jogosFase);
+    console.log(grupoTimes);
+
+    jogosFase.forEach((jogo) => {
+      console.log("tou aqui");
+      console.log(" começando");
+      console.log(jogo);
+      console.log(jogo.timeA);
+      console.log(stats);
+      console.log(stats[jogo.timeA]);
+
       if (grupoTimes.includes(jogo.timeA) && grupoTimes.includes(jogo.timeB)) {
         const golsA = Number(jogo.golsA) || 0;
         const golsB = Number(jogo.golsB) || 0;
@@ -86,14 +103,13 @@ export default function TabelaTab({ onToast }) {
       }
     });
 
-    return Object.values(stats)
-      .sort((a, b) => {
-        if (b.pontos !== a.pontos) return b.pontos - a.pontos;
-        const saldoA = a.gf - a.ga;
-        const saldoB = b.gf - b.ga;
-        if (saldoB !== saldoA) return saldoB - saldoA;
-        return b.gf - a.gf;
-      });
+    return Object.values(stats).sort((a, b) => {
+      if (b.pontos !== a.pontos) return b.pontos - a.pontos;
+      const saldoA = a.gf - a.ga;
+      const saldoB = b.gf - b.ga;
+      if (saldoB !== saldoA) return saldoB - saldoA;
+      return b.gf - a.gf;
+    });
   };
 
   const grupoAStats = useMemo(() => calculateStats(GRUPOS.A), [jogos]);
@@ -119,10 +135,16 @@ export default function TabelaTab({ onToast }) {
               const saldo = item.gf - item.ga;
               const isClassificado = idx < 2;
               return (
-                <tr key={item.time} className={`tabela-row ${isClassificado ? 'classificado' : ''}`}>
+                <tr
+                  key={item.time}
+                  className={`tabela-row ${isClassificado ? "classificado" : ""}`}
+                >
                   <td className="col-pos">{idx + 1}</td>
                   <td className="col-time">{item.time.toUpperCase()}</td>
-                  <td className="col-num">{saldo > 0 ? '+' : ''}{saldo}</td>
+                  <td className="col-num">
+                    {saldo > 0 ? "+" : ""}
+                    {saldo}
+                  </td>
                   <td className="col-pts">{item.pontos}</td>
                 </tr>
               );
@@ -138,12 +160,14 @@ export default function TabelaTab({ onToast }) {
     <div className="tabela-tab">
       <div className="tabela-header">
         <h2>📊 Tabela</h2>
-        <button className="tabela-refresh" onClick={handleRefresh}>↻</button>
+        <button className="tabela-refresh" onClick={handleRefresh}>
+          ↻
+        </button>
       </div>
 
       <div className="tabelas-container">
-        {renderTabel(grupoAStats, 'A')}
-        {renderTabel(grupoBStats, 'B')}
+        {renderTabel(grupoAStats, "A")}
+        {renderTabel(grupoBStats, "B")}
       </div>
     </div>
   );
