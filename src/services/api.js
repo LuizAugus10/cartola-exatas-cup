@@ -1,5 +1,5 @@
 const BASE_URL =
-  "https://script.google.com/macros/s/AKfycbxwRzoKcWYBWasQ0a37nKQTowyd34Ar-ZoOHT7bvz3ZHqey57dBvCPril6bFGNog-MRQg/exec";
+  "https://script.google.com/macros/s/AKfycbyWCsJSaflGXCW3kSXgSIpBOjg9OVxB3dbrfbJf09Yi9jHoJiG5NN0D-61xDuqBbuDz-A/exec";
 
 async function fetchAPI(params) {
   const query = Object.entries(params)

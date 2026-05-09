@@ -67,7 +67,7 @@ export default function Login({ onLogin }) {
               type="tel"
               className="login-input"
               placeholder="Digite seu Código de Acesso"
-              value={Código}
+              value={telefone}
               onChange={(e) => setTelefone(e.target.value)}
               disabled={loading}
               autoFocus

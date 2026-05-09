@@ -1,0 +1,150 @@
+.mvp-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.mvp-modal {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.mvp-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #999;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mvp-close:hover {
+  color: #333;
+}
+
+.mvp-header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding-top: 8px;
+}
+
+.mvp-header h2 {
+  font-size: 24px;
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.mvp-header p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.mvp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mvp-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mvp-card:hover {
+  background: #f9f9f9;
+  border-color: #ffd700;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.1);
+}
+
+.mvp-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-weight: bold;
+  color: #666;
+  overflow: hidden;
+}
+
+.mvp-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mvp-info {
+  flex: 1;
+}
+
+.mvp-nome {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.mvp-time {
+  font-size: 12px;
+  color: #999;
+  margin-top: 2px;
+}
+
+.mvp-posicao {
+  font-size: 11px;
+  color: #bbb;
+  margin-top: 2px;
+}
+
+.mvp-select-btn {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 12px;
+  color: #333;
+  flex-shrink: 0;
+}
+
+.mvp-select-btn:hover {
+  background: linear-gradient(135deg, #ffed4e, #ffd700);
+  transform: scale(1.05);
+}
+
+.mvp-select-btn:active {
+  transform: scale(0.95);
+}

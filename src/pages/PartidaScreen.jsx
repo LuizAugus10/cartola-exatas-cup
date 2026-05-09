@@ -9,6 +9,7 @@ import {
 } from '../services/api';
 import Loading from '../components/Loading';
 import GoalkeeperSelectModal from '../components/GoalkeeperSelectModal';
+import MVPSelectModal from '../components/MVPSelectModal';
 import './PartidaScreen.css';
 
 export default function PartidaScreen({ user, jogoId, jogo, onVoltar, onToast }) {
@@ -32,6 +33,8 @@ export default function PartidaScreen({ user, jogoId, jogo, onVoltar, onToast })
   const [showGKModal, setShowGKModal] = useState(false);
   const [selectedGoalkeepers, setSelectedGoalkeepers] = useState([]);
   const [pendingGoal, setPendingGoal] = useState(null);
+  const [showMVPModal, setShowMVPModal] = useState(false);
+  const [mvpSelecionado, setMvpSelecionado] = useState(null);
 
   useEffect(() => {
     setJogoAtual(jogo);
@@ -254,16 +257,47 @@ export default function PartidaScreen({ user, jogoId, jogo, onVoltar, onToast })
   };
 
   const handleEncerrar = async () => {
-    if (!window.confirm('Tem certeza que quer encerrar o jogo?')) return;
+    // Primeira validação
+    if (!mvpSelecionado) {
+      setShowMVPModal(true);
+      return;
+    }
 
+    // Se MVP já foi selecionado, encerrar o jogo
     try {
       const result = await encerrarJogo(user.telefone, jogoId);
       if (result.success) {
-        onToast('Jogo encerrado!');
+        onToast('Jogo encerrado com sucesso! 🏆');
         onVoltar();
+      } else {
+        onToast('Erro ao encerrar jogo', 'error');
       }
     } catch (err) {
       onToast('Erro ao encerrar jogo', 'error');
+      console.error(err);
+    }
+  };
+
+  const handleSelectMVP = async (jogadorId) => {
+    try {
+      // Registrar MVP
+      const result = await registrarEvento(
+        user.telefone,
+        jogoId,
+        jogadorId,
+        'mvp'
+      );
+      
+      if (result.success) {
+        setMvpSelecionado(jogadorId);
+        setShowMVPModal(false);
+        onToast('🏆 MVP registrado! Agora clique em Encerrar novamente');
+      } else {
+        onToast('Erro ao registrar MVP', 'error');
+      }
+    } catch (err) {
+      onToast('Erro ao registrar MVP', 'error');
+      console.error(err);
     }
   };
 
@@ -451,6 +485,13 @@ export default function PartidaScreen({ user, jogoId, jogo, onVoltar, onToast })
         }}
         goalkeepers={selectedGoalkeepers}
         onSelect={handleSelectGoleiro}
+      />
+
+      <MVPSelectModal
+        isOpen={showMVPModal}
+        onClose={() => setShowMVPModal(false)}
+        jogadores={jogadoresFiltrados}
+        onSelect={handleSelectMVP}
       />
     </div>
   );
